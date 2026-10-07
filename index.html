@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💌 Special Message</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #fbc2eb 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .heart-bg {
+      position: absolute;
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.55);
+      animation: float 7s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    .container {
+      width: 90%;
+      max-width: 420px;
+      background: white;
+      border-radius: 30px;
+      box-shadow: 0 25px 50px rgba(255, 105, 180, 0.3);
+      overflow: hidden;
+      position: relative;
+      z-index: 10;
+    }
+
+    .slide {
+      display: none;
+      padding: 40px 30px;
+      text-align: center;
+      min-height: 500px;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .emoji {
+      font-size: 70px;
+      margin-bottom: 15px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5rem;
+      color: #ff4d6d;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      color: #ff4d6d;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .funny-text {
+      background: #fff0f5;
+      padding: 15px 20px;
+      border-radius: 20px;
+      font-size: 1rem;
+      color: #d6336c;
+      margin: 15px 0;
+      border: 2px dashed #ff8fab;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-next, .btn-start {
+      background: linear-gradient(45deg, #ff4d6d, #ff8fab);
+      color: white;
+      box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
+    }
+
+    .btn-next:hover, .btn-start:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 25px rgba(255, 77, 109, 0.5);
+    }
+
+    .btn-prev {
+      background: #f8f9fa;
+      color: #666;
+      border: 2px solid #eee;
+    }
+
+    .btn-prev:hover {
+      background: #eee;
+    }
+
+    .btn-yes {
+      background: linear-gradient(45deg, #ff4d6d, #c9184a);
+      color: white;
+      font-size: 1.2rem;
+      padding: 16px 40px;
+      box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+    }
+
+    .btn-yes:hover {
+      transform: scale(1.08);
+    }
+
+    .btn-no {
+      background: #f1f3f5;
+      color: #868e96;
+      font-size: 0.95rem;
+      padding: 12px 25px;
+    }
+
+    .progress {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ffc2d1;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      background: #ff4d6d;
+      width: 30px;
+      border-radius: 10px;
+    }
+
+    /* Minigame */
+    .game-area {
+      height: 220px;
+      background: linear-gradient(180deg, #fff0f5, #ffe4ec);
+      border-radius: 20px;
+      margin: 15px 0;
+      position: relative;
+      overflow: hidden;
+      border: 2px dashed #ff8fab;
+    }
+
+    .clickable-heart {
+      position: absolute;
+      font-size: 32px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s;
+      animation: popIn 0.4s ease;
+      z-index: 5;
+    }
+
+    .clickable-heart:hover {
+      transform: scale(1.3);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .score-box {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ff4d6d;
+      margin: 10px 0;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #ffe4ec;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 10px 0 20px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff4d6d, #ff8fab);
+      border-radius: 20px;
+      transition: width 0.3s ease;
+    }
+
+    #success {
+      display: none;
+      text-align: center;
+      padding: 40px 30px;
+      min-height: 500px;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #success h1 {
+      font-size: 2.8rem;
+    }
+
+    .big-heart {
+      font-size: 100px;
+      animation: heartbeat 1.2s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .no-move {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .locked-text {
+      font-size: 0.95rem;
+      color: #999;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background hearts -->
+  <div class="heart-bg" style="left:8%; animation-delay:0s;">❤️</div>
+  <div class="heart-bg" style="left:22%; animation-delay:1.8s;">💕</div>
+  <div class="heart-bg" style="left:40%; animation-delay:3.2s;">💗</div>
+  <div class="heart-bg" style="left:58%; animation-delay:0.7s;">💖</div>
+  <div class="heart-bg" style="left:75%; animation-delay:2.5s;">❤️</div>
+  <div class="heart-bg" style="left:88%; animation-delay:4s;">💕</div>
+
+  <div class="container">
+
+    <!-- SLIDE JUDUL -->
+    <div class="slide active" id="slideTitle">
+      <div>
+        <div class="emoji">💌✨</div>
+        <h1>Special Message</h1>
+        <p style="font-size: 1.2rem; color: #333;">
+          Aloww Ell alias shailzawati, kayaknya aku mo ngomong deh..
+        </p>
+        <div class="funny-text">
+          Tapi sebelumnya, kamu harus menyelesaikan tantangan dulu yaw hehe🫣
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn-start" onclick="goToMinigame()">Mulai →</button>
+      </div>
+    </div>
+
+    <!-- MINIGAME -->
+    <div class="slide" id="minigame">
+      <div>
+        <h2>Kumpulkan 5 Hati</h2>
+        <p>Klik hati yang muncul untuk membuka pesan rahasia!</p>
+        
+        <div class="score-box">
+          <span id="score">0</span> / 5
+        </div>
+        
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="game-area" id="gameArea"></div>
+        
+        <p class="locked-text">🔒 Pesan masih terkunci...</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 1 -->
+    <div class="slide" id="slide1">
+      <div>
+        <div class="progress">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <div class="emoji">😶👉👈</div>
+        <h1>Hai Ell...</h1>
+        <p>Aku daritadi kepikiran sesuatu tentang kamu.</p>
+        <div class="funny-text">
+          Seriusan, dari tadi aku pen ngomong, cmn gabisa bingung mulai nya gimana 😳
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn-next" onclick="nextSlide()">Lanjut yuk →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide" id="slide2">
+      <div>
+        <div class="progress">
+          <div class="dot"></div>
+          <div class="dot active"></div>
+          <div class="dot"></div>
+        </div>
+        <div class="emoji">👉👈</div>
+        <h1>eumm....</h1>
+        <p>What if i say...i think i fall in love with you..😶</p>
+        <div class="funny-text">
+          Aku ngerasain itu akhir-akhir ini, kayak perhatian sekecil apapun dari kamu tuh bikin aku salting.
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn-prev" onclick="prevSlide()">← Kembali</button>
+        <button class="btn-next" onclick="nextSlide()">Terus dong →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide" id="slide3">
+      <div>
+        <div class="progress">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot active"></div>
+        </div>
+        <div class="emoji">💘✨</div>
+        <h1>Jadi...</h1>
+        <p style="font-size: 1.2rem; color: #333; font-weight: 500;">
+          Aku suka kamu.<br>
+          Kamu mungkin ngeh kenapa akhir-akhir ini aku minta vc, sebenarnya itu kangen...
+        </p>
+        <div class="funny-text" style="font-size: 1.05rem;">
+          Jadi....mau gak mulai sekarang aku dan kamu jadi kita? 🫣❤️<br>
+          Oiyaa, aku maksa kayaknya ini, soalnya kamu gak bisa pilih tombol tolak, coba aja wlee.
+        </div>
+      </div>
+      <div class="btn-group" style="flex-direction: column; gap: 15px;">
+        <button class="btn-yes" onclick="showSuccess()">Iya, aku mau! 💕</button>
+        <button class="btn-no no-move" id="noBtn" onclick="moveNoButton()">Nggak dulu deh</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div id="success">
+      <div class="big-heart">💖</div>
+      <h1>Yeyyy!</h1>
+      <p style="font-size: 1.3rem; margin: 20px 0; color: #555;">
+        Makasih ya... udah mau sama aku 🥹<br>
+        Sekarang kita pacaran kann..?, arrgghh aloww sayangku
+      </p>
+      <p style="color: #ff4d6d; font-weight: 600; font-size: 1.1rem;">
+        From now on, you're my favorite person ❤️
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    let score = 0;
+    let gameInterval;
+    const hearts = ['❤️', '💕', '💗', '💖', '💓', '💞'];
+
+    function showSlide(id) {
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function goToMinigame() {
+      showSlide('minigame');
+      startGame();
+    }
+
+    function nextSlide() {
+      if (currentSlide === 1) {
+        showSlide('slide2');
+        currentSlide = 2;
+      } else if (currentSlide === 2) {
+        showSlide('slide3');
+        currentSlide = 3;
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide === 2) {
+        showSlide('slide1');
+        currentSlide = 1;
+      } else if (currentSlide === 3) {
+        showSlide('slide2');
+        currentSlide = 2;
+      }
+    }
+
+    function startGame() {
+      score = 0;
+      document.getElementById('score').textContent = '0';
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('gameArea').innerHTML = '';
+      gameInterval = setInterval(spawnHeart, 700);
+    }
+
+    function spawnHeart() {
+      if (score >= 5) return;
+
+      const area = document.getElementById('gameArea');
+      const heart = document.createElement('div');
+      heart.className = 'clickable-heart';
+      heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+
+      const maxX = area.clientWidth - 40;
+      const maxY = area.clientHeight - 40;
+      heart.style.left = Math.random() * maxX + 'px';
+      heart.style.top = Math.random() * maxY + 'px';
+
+      heart.onclick = function () {
+        collectHeart(this);
+      };
+
+      area.appendChild(heart);
+
+      setTimeout(() => {
+        if (heart.parentNode) heart.remove();
+      }, 2500);
+    }
+
+    function collectHeart(el) {
+      el.remove();
+      score++;
+      document.getElementById('score').textContent = score;
+      document.getElementById('progressFill').style.width = (score / 5 * 100) + '%';
+
+      if (score >= 5) {
+        clearInterval(gameInterval);
+        setTimeout(() => {
+          currentSlide = 1;
+          showSlide('slide1');
+        }, 600);
+      }
+    }
+
+    function showSuccess() {
+      document.querySelectorAll('.slide').forEach(s => s.style.display = 'none');
+      const success = document.getElementById('success');
+      success.style.display = 'flex';
+
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => createBgHeart(), i * 100);
+      }
+    }
+
+    function moveNoButton() {
+      const btn = document.getElementById('noBtn');
+      const x = (Math.random() - 0.5) * 220;
+      const y = (Math.random() - 0.5) * 120;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    function createBgHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart-bg';
+      heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.fontSize = (Math.random() * 18 + 14) + 'px';
+      heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }
+
+    setInterval(() => {
+      if (Math.random() > 0.6) createBgHeart();
+    }, 900);
+  </script>
+</body>
+</html>
